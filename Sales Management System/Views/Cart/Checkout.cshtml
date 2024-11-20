@@ -1,0 +1,126 @@
+﻿@model CheckoutViewModel
+
+<div class="container mt-5">
+    <h2>Checkout</h2>
+    <form action="/cart/Checkout" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Billing Information</h4>
+                <div class="form-group">
+                    <label for="Name">Full Name</label>
+                    <input type="text" id="Name" name="Name" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="Email">Email Address</label>
+                    <input type="email" id="Email" name="Email" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="Address">Shipping Address</label>
+                    <input type="text" id="Address" name="Address" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="City">City</label>
+                    <input type="text" id="City" name="City" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="PostalCode">Postal Code</label>
+                    <input type="text" id="PostalCode" name="PostalCode" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="PhoneNumber">Phone Number</label>
+                    <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h4>Order Summary</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <tr>
+                                <td>@item.Product.Name</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Product.Price</td>
+                                <td>@(item.Product.Price * item.Quantity)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="form-group">
+                    <label for="PaymentMethod">Payment Method</label>
+                    <select id="PaymentMethod" name="PaymentMethod" class="form-control" required>
+                        <option value="CreditCard">Credit Card</option>
+                        <option value="PayPal">PayPal</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <h4>Total: @Model.TotalAmount</h4>
+                </div>
+                <div id="paypal-button-container"></div>
+                <br />  
+                <button type="submit" class="btn btn-success">Proceed to Payment</button>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+                         <!-- PayPal Button -->
+          
+       
+
+@section Scripts {
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+    <script>
+        let _total = @Html.Raw(Model.TotalAmount);
+
+        paypal.Button.render({
+            // Configure environment
+            env: 'sandbox',
+            client: {
+                sandbox: 'AcKRtgL4i68EZ2ZYuYUx3ilihAg2YhL5dtF_m19A8MjBWVOn6ewNS4M_uV8gA3xi98zTcUq38gUHbVFx'
+            },
+
+            // Customize button
+            locale: 'en_US',
+            style: {
+                size: 'small',
+                color: 'gold',
+                shape: 'pill'
+            },
+            commit: true,
+
+            // Set up a payment
+            payment: function (data, actions) {
+                return actions.payment.create({
+                    transactions: [{
+                        amount: {
+                            total: _total,
+                            currency: 'USD'
+                        }
+                    }]
+                });
+            },
+
+            // Execute the payment
+            onAuthorize: function (data, actions) {
+                return actions.payment.execute().then(function () {
+                    var url = '@Url.Action("CompleteOrder", "Orders", new { })';
+                    window.location.href = url;
+                });
+            }
+        }, '#paypal-button-container');
+    </script>
+}

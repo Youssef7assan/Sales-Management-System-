@@ -1,0 +1,71 @@
+﻿@model Sales_Management_System.ViewModels.OrderViewModel
+
+@{
+    ViewData["Title"] = "Edit1";
+}
+
+<h1>Edit</h1>
+
+<h4>OrderViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+
+        <form action ="/order/SaveEdit/@Model.Id" method="post">
+            <input type="hidden" asp-for="Id" />
+
+			<div asp-va<input type="hidden" asp-for="Id" />lidation-summary="All" class="text-danger"></div>
+          
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" value="@Model.OrderDate"/>
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalAmount" class="control-label"></label>
+                <input asp-for="TotalAmount" class="form-control" value="@Model.TotalAmount" />
+                <span asp-validation-for="TotalAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" asp-for="IsPaid" class="form-check-input" />
+                    @Html.DisplayNameFor(model => model.IsPaid)
+                </label>
+            </div>
+
+        <div class="form-group">
+    <label asp-for="CustomerID" class="control-label">Customer</label>
+    <select asp-for="CustomerID" class="form-control">
+        <option value="">-- Select Customer --</option>
+        @foreach (var customer in Model.CustomersList)
+        {<option value="@customer.Id" >
+    @customer.Fname @customer.Lname
+</option>
+
+        }
+    </select>
+</div>
+
+           <div class="form-group">
+    <label asp-for="Status" class="control-label"></label>
+    <select asp-for="Status" class="form-control">
+        @foreach (var status in Enum.GetValues(typeof(StatusOrder)))
+        {
+            <option value="@status" >
+                @status
+            </option>
+        }
+    </select>
+</div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

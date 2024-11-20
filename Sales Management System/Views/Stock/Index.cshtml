@@ -1,0 +1,52 @@
+﻿@model List<Stock>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Stocks</h1>
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+
+            <th>Quantity</th>
+            <th>Product Name</th>
+            <th>Store</th>
+            
+            <th>Actions</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Quantity</td>
+                <td>@item.products.Name</td>
+                <td>@item.StoreID</td>
+               
+
+                <td>
+                    <!-- زر الحذف -->
+                    <a href="/stock/Delete/@item.Id" class="btn btn-danger">Delete</a>  
+                        
+                    
+
+                    <!-- زر تعديل -->
+                    <a href="/Stock/edit/@item.Id" class="btn btn-primary">Edit</a>
+                    <a href="/Stock/Details/@item.Id" class="btn btn-info">Detail</a>
+
+                    @*  
+                    <!-- زر حذف -->
+                    <form action="/instructor/delete/@item.Id" method="post" onsubmit="return confirm('Are you sure you want to delete this instructor?');" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+                 *@
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="/stock/add" class="btn btn-success">Add Stock</a>

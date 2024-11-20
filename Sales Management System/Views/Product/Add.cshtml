@@ -1,0 +1,58 @@
+﻿@model Sales_Management_System.ViewModels.ProductVM
+
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Add New Product</h2>
+
+    <form asp-action="SaveAdd" method="post">
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="Price" class="control-label"></label>
+            <input asp-for="Price" class="form-control" type="number" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Quantity" class="control-label"></label>
+            <input asp-for="Quantity" class="form-control" type="number" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoryID" class="control-label">Category</label>
+            <select asp-for="CategoryID" class="form-control">
+                <option value="">-- Select Category --</option>
+                @foreach (var category in Model.categoryList)
+                {
+                    <option value="@category.Id">@category.CategoryName</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="SupplierID" class="control-label">Supplier</label>
+            <select asp-for="SupplierID" class="form-control">
+                <option value="">-- Select Supplier --</option>
+                @foreach (var supplier in Model.SupplierList)
+                {
+                    <option value="@supplier.Id">@supplier.Name</option>
+                }
+            </select>
+        </div>
+
+
+
+
+        <button type="submit" class="btn btn-primary">Add Product</button>
+    </form>
+</div>

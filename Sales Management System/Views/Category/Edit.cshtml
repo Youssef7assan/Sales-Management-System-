@@ -1,0 +1,22 @@
+﻿@model Sales_Management_System.Models.Category
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<form method="post" action="/category/SaveEdit/@Model.Id">
+    <div class="form-group">
+        <label for="CategoryName">CategoryName</label>
+        <input name="CategoryName" type="text" class="form-control" value="@Model.CategoryName" id="Name" placeholder="Enter Name">
+    </div>
+
+    
+    <br />
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
